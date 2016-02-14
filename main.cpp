@@ -1,5 +1,7 @@
+
 #include <iostream>
 #include <fstream>
+
 using namespace std;
 
 class TreeNode
@@ -52,7 +54,7 @@ Tree::Tree()
 	root = NULL;
 }
 
-int Tree::insert_node(const int &x)  // Вставка
+int Tree::insert_node(const int &x)  
 {
 	TreeNode* n = new TreeNode(x);
 	TreeNode* ptr;
@@ -96,7 +98,7 @@ int Tree::insert_node(const int &x)  // Вставка
 	return 0;
 }
 
-TreeNode Tree::delete_node(TreeNode *z) // Удаление
+TreeNode Tree::delete_node(TreeNode *z) 
 {
 	TreeNode* y;
 	TreeNode* x;
@@ -127,8 +129,6 @@ TreeNode Tree::delete_node(TreeNode *z) // Удаление
 	return *y;
 }
 
-
-// Извлечение самого старого элемента
 TreeNode* Tree::extract_old(TreeNode* x)
 {
 	TreeNode *h1, *h2;
@@ -145,17 +145,16 @@ TreeNode* Tree::extract_old(TreeNode* x)
 		extract_old(h2);
 	}
 	if (h1->age >= x->age)
-	if (h2->age >= h1->age)
-		return h2;
-	else
-		return h1;
+		if (h2->age >= h1->age)
+			return h2;
+		else
+			return h1;
 	else if (h2->age >= x->age)
 		return h2;
 	else
 		return x;
 }
 
-// Поиск минимального значения в дереве
 TreeNode* Tree::find_min(TreeNode* x)
 {
 	while (x->left != 0)
@@ -163,7 +162,7 @@ TreeNode* Tree::find_min(TreeNode* x)
 	return x;
 }
 
-TreeNode* Tree::find_successor(const int & val) // Поиск последующего
+TreeNode* Tree::find_successor(const int & val) 
 {
 	TreeNode* x = find_node(root, val);
 	TreeNode* y;
@@ -180,7 +179,6 @@ TreeNode* Tree::find_successor(const int & val) // Поиск последующего
 	return y;
 }
 
-// Поиск вершины в дереве
 TreeNode* Tree::find_node(TreeNode* n, const int & val)
 {
 	if (n == 0 || val == n->get_data())
@@ -191,7 +189,6 @@ TreeNode* Tree::find_node(TreeNode* n, const int & val)
 		return find_node(n->left, val);
 }
 
-// Прямой обход  
 int Tree::preorder_walk(TreeNode* n, int *m, int i)
 {
 	if (n != 0)
@@ -205,13 +202,12 @@ int Tree::preorder_walk(TreeNode* n, int *m, int i)
 	return i - 1;
 }
 
-// Получение корня
+
 TreeNode* Tree::get_root()
 {
 	return root;
 }
 
-// Увеличение возраста вершин, после добавления новой
 void Tree::p_age(TreeNode* n)
 {
 	if (n != 0)
@@ -222,34 +218,52 @@ void Tree::p_age(TreeNode* n)
 	}
 }
 
-int main()
+int main(int argc, char *argv[])
 {
+	
+	if (argc < 3) {
+		cout << "\nUsage: tree.exe <input file> <output file>\n";
+		return 1;
+	}
+	
 	Tree cache;
 	fstream F;
 	ofstream O;
 	int a = 0;
-	int b = cache.maxsize;
+
 	cache.size = 1;
-	cout << "Enter TreeMaxSize: ";
-	cin >> b;
-	cache.maxsize = b;
-	F.open("C:\\Users\\Anna\\Documents\\Visual Studio 2013\\Projects\\ConsoleApplication13\\input.txt", ios::in); //Считывание(измените адрес)
+	
+	F.open(argv[1], ios::in); 
+	if (!F.is_open()) {
+		cout << "Error opening file \"" << argv[1] << "\"";
+		return 2;
+	}
+	
+	F >> cache.maxsize;
+
 	while (!F.eof())
 	{
 		F >> a;
 		cache.insert_node(a);
 	}
+
 	F.close();
-	O.open("C:\\Users\\Anna\\Documents\\Visual Studio 2013\\Projects\\ConsoleApplication13\\output.txt"); //Получившееся дерево(измените адрес)
+	O.open(argv[2]); 
+	if (!O.is_open()) {
+		cout << "Error opening file \"" << argv[2] << "\"";
+		return 2;
+	}
 
 	int *mas = new int[cache.size];
 	cache.preorder_walk(cache.get_root(), mas, 0);
 	for (int i = 0; i < cache.size; i++)
 		O << mas[i] << ' ';
 
-
 	O.close();
 	delete mas;
+	
+	cout << "\n\n";
 	system("pause");
+	
 	return 0;
 }
