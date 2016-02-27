@@ -1,4 +1,5 @@
-CommandDispatcher.cpp
+		CommandDispatcher.cpp
+		
 
 #include "CommandDispatcher.h"
 
@@ -147,7 +148,9 @@ void CommandDispatcher::print(string params) {
 	*out << "\n";
 	log << " - printed\n";
 };
-splay.cpp
+
+		splay.cpp
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -200,7 +203,9 @@ int main(int argc, char *argv[])
 
 	return 0;
 }
-SplayTree.cpp
+
+		SplayTree.cpp
+		
 #include "SplayTree.h"
 
 SplayTree::SplayTree() {
@@ -464,7 +469,9 @@ void SplayTree::splay(TreeNode* node) {
 		}
 	}
 }
-TreeNode.cpp
+
+		TreeNode.cpp
+		
 #include "TreeNode.h"
 
 TreeNode::TreeNode(TreeNode* parent)
